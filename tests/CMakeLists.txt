@@ -69,12 +69,17 @@ else ()
 endif (GTest_FOUND)
 
 file(COPY
-  data/wallet_9svHk1.keys
-  data/wallet_9svHk1
+  data/wallet_serialization_portability.keys
+  data/wallet_serialization_portability
   data/outputs
   data/unsigned_monero_tx
   data/signed_monero_tx
   DESTINATION data)
+
+# graft supernode data
+file(COPY
+    data/supernode
+    DESTINATION data)
 
 add_subdirectory(core_tests)
 add_subdirectory(fuzz)
@@ -82,11 +87,16 @@ add_subdirectory(crypto)
 add_subdirectory(functional_tests)
 add_subdirectory(performance_tests)
 add_subdirectory(core_proxy)
+if (NOT DISABLE_SUPERNODE)
 add_subdirectory(unit_tests)
+endif()
 add_subdirectory(difficulty)
 add_subdirectory(hash)
 add_subdirectory(net_load_tests)
 add_subdirectory(libwallet_api_tests)
+if (NOT DISABLE_SUPERNODE)
+add_subdirectory(supernode_tests)
+endif()
 
 # add_subdirectory(daemon_tests)
 

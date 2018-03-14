@@ -1,3 +1,4 @@
+# Copyright (c) 2017, The Graft Project
 # Copyright (c) 2014-2017, The Monero Project
 #
 # All rights reserved.
@@ -50,6 +51,7 @@ set(unit_tests_sources
   mnemonics.cpp
   mul_div.cpp
   parse_amount.cpp
+  premine.cpp
   serialization.cpp
   slow_memmem.cpp
   test_tx_utils.cpp
@@ -80,6 +82,7 @@ target_link_libraries(unit_tests
     wallet
     p2p
     epee
+    supernode
     ${Boost_CHRONO_LIBRARY}
     ${Boost_THREAD_LIBRARY}
     ${GTEST_LIBRARIES}

@@ -1,3 +1,4 @@
+// Copyright (c) 2018, The Graft Project
 // Copyright (c) 2014-2017, The Monero Project
 //
 // All rights reserved.
@@ -409,15 +410,15 @@ namespace nodetool
     std::set<std::string> full_addrs;
     if (testnet)
     {
-      full_addrs.insert("54.207.116.130:28980");
-      full_addrs.insert("54.207.21.115:28980");
-      full_addrs.insert("54.233.159.189:28980");
+      full_addrs.insert("34.204.170.120:28880");
+      full_addrs.insert("54.88.58.35:28880");
+      full_addrs.insert("34.228.64.99:28880");
     }
     else
     {
-      full_addrs.insert("54.207.116.130:18980");
-      full_addrs.insert("54.207.21.115:18980");
-      full_addrs.insert("54.233.159.189:18980");
+      full_addrs.insert("13.58.215.50:18980");
+      full_addrs.insert("13.59.105.220:18980");
+      full_addrs.insert("18.216.94.64:18980");
     }
     return full_addrs;
   }
@@ -1433,7 +1434,7 @@ namespace nodetool
     }
     rsp.connections_count = m_net_server.get_config_object().get_connections_count();
     rsp.incoming_connections_count = rsp.connections_count - get_outgoing_connections_count();
-    rsp.version = MONERO_VERSION_FULL;
+    rsp.version = GRAFT_VERSION_FULL;
     rsp.os_version = tools::get_os_version_string();
     m_payload_handler.get_stat_info(rsp.payload_info);
     return 1;

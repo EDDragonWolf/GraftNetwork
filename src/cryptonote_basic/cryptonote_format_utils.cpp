@@ -1,3 +1,4 @@
+// Copyright (c) 2017, The Graft Project
 // Copyright (c) 2014-2017, The Monero Project
 // 
 // All rights reserved.
@@ -37,6 +38,7 @@ using namespace epee;
 #include "crypto/crypto.h"
 #include "crypto/hash.h"
 #include "ringct/rctSigs.h"
+#include "serialization/binary_utils.h"
 
 #undef MONERO_DEFAULT_LOG_CATEGORY
 #define MONERO_DEFAULT_LOG_CATEGORY "cn"
@@ -531,6 +533,7 @@ namespace cryptonote
     switch (decimal_point)
     {
       case 12:
+      case 10:
       case 9:
       case 6:
       case 3:
@@ -549,6 +552,7 @@ namespace cryptonote
   //---------------------------------------------------------------
   std::string get_unit(unsigned int decimal_point)
   {
+    return "graft";
     if (decimal_point == (unsigned int)-1)
       decimal_point = default_decimal_point;
     switch (std::atomic_load(&default_decimal_point))
@@ -706,28 +710,9 @@ namespace cryptonote
   //---------------------------------------------------------------
   bool calculate_block_hash(const block& b, crypto::hash& res)
   {
-    // EXCEPTION FOR BLOCK 202612
-    const std::string correct_blob_hash_202612 = "3a8a2b3a29b50fc86ff73dd087ea43c6f0d6b8f936c849194d5c84c737903966";
-    const std::string existing_block_id_202612 = "bbd604d2ba11ba27935e006ed39c9bfdd99b76bf4a50654bc1e1e61217962698";
-    crypto::hash block_blob_hash = get_blob_hash(block_to_blob(b));
-
-    if (string_tools::pod_to_hex(block_blob_hash) == correct_blob_hash_202612)
-    {
-      string_tools::hex_to_pod(existing_block_id_202612, res);
-      return true;
-    }
     bool hash_result = get_object_hash(get_block_hashing_blob(b), res);
 
-    if (hash_result)
-    {
-      // make sure that we aren't looking at a block with the 202612 block id but not the correct blobdata
-      if (string_tools::pod_to_hex(res) == existing_block_id_202612)
-      {
-        LOG_ERROR("Block with block id for 202612 but incorrect block blob hash found!");
-        res = null_hash;
-        return false;
-      }
-    }
+
     return hash_result;
   }
   //---------------------------------------------------------------
@@ -760,13 +745,7 @@ namespace cryptonote
   //---------------------------------------------------------------
   bool get_block_longhash(const block& b, crypto::hash& res, uint64_t height)
   {
-    // block 202612 bug workaround
-    const std::string longhash_202612 = "84f64766475d51837ac9efbef1926486e58563c95a19fef4aec3254f03000000";
-    if (height == 202612)
-    {
-      string_tools::hex_to_pod(longhash_202612, res);
-      return true;
-    }
+
     blobdata bd = get_block_hashing_blob(b);
     crypto::cn_slow_hash(bd.data(), bd.size(), res);
     return true;
@@ -869,4 +848,34 @@ namespace cryptonote
     block_hashes_calculated = block_hashes_calculated_count;
     block_hashes_cached = block_hashes_cached_count;
   }
+
+  bool add_graft_tx_extra_to_extra(transaction &tx, const supernode::GraftTxExtra &graft_extra)
+  {
+      return add_graft_tx_extra_to_extra(tx.extra, graft_extra);
+  }
+
+  bool add_graft_tx_extra_to_extra(std::vector<uint8_t>& extra, const supernode::GraftTxExtra &graft_extra)
+  {
+      std::string blob;
+      ::serialization::dump_binary(const_cast<supernode::GraftTxExtra&>(graft_extra), blob);
+      tx_extra_graft_extra container;
+      container.data = blob;
+      blob.clear();
+      ::serialization::dump_binary(container, blob);
+      extra.push_back(TX_EXTRA_GRAFT_EXTRA_TAG);
+      std::copy(blob.begin(), blob.end(), std::back_inserter(extra));
+      return true;
+  }
+
+  bool get_graft_tx_extra_from_extra(const transaction &tx, supernode::GraftTxExtra &graft_tx_extra)
+  {
+      std::vector<tx_extra_field> tx_extra_fields;
+      parse_tx_extra(tx.extra, tx_extra_fields);
+      tx_extra_graft_extra graft_extra;
+      if(!find_tx_extra_field_by_type(tx_extra_fields, graft_extra))
+        return false;
+      return ::serialization::parse_binary(graft_extra.data, graft_tx_extra);
+  }
+
+
 }

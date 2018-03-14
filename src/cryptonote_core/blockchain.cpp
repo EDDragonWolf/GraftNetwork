@@ -87,9 +87,10 @@ static const struct {
   uint8_t threshold;
   time_t time;
 } mainnet_hard_forks[] = {
-  // version 1 from the start of the blockchain
-  { 1, 1, 0, 1341378000 },
 
+  // version 1 from the start of the blockchain
+  { 1, 0, 0, 1341378000 },
+/*
   // version 2 starts from block 1009827, which is on or around the 20th of March, 2016. Fork time finalised on 2015-09-20. No fork voting occurs for the v2 fork.
   { 2, 1009827, 0, 1442763710 },
 
@@ -104,8 +105,12 @@ static const struct {
 
   // version 6 starts from block 1400000, which is on or around the 16th of September, 2017. Fork time finalised on 2017-08-18.
   { 6, 1400000, 0, 1503046577 },
+  */
+  // GRAFT: start hardfork v7 from 1st block
+  { 7, 1, 0, 1503046577 },
 };
-static const uint64_t mainnet_hard_fork_version_1_till = 1009826;
+// static const uint64_t mainnet_hard_fork_version_1_till = 1009826;
+static const uint64_t mainnet_hard_fork_version_1_till = 1;
 
 static const struct {
   uint8_t version;
@@ -113,9 +118,10 @@ static const struct {
   uint8_t threshold;
   time_t time;
 } testnet_hard_forks[] = {
-  // version 1 from the start of the blockchain
-  { 1, 1, 0, 1341378000 },
 
+  // version 1 from the start of the blockchain
+  { 1, 0, 0, 1341378000 },
+  /*
   // version 2 starts from block 624634, which is on or around the 23rd of November, 2015. Fork time finalised on 2015-11-20. No fork voting occurs for the v2 fork.
   { 2, 624634, 0, 1445355000 },
 
@@ -125,8 +131,12 @@ static const struct {
   { 5, 802660, 0, 1472415036 + 86400*180 }, // add 5 months on testnet to shut the update warning up since there's a large gap to v6
 
   { 6, 971400, 0, 1501709789 },
+  */
+  // GRAFT: start hardfork v7 from 1st block
+  { 7, 1, 0, 1501709789 },
 };
-static const uint64_t testnet_hard_fork_version_1_till = 624633;
+// static const uint64_t testnet_hard_fork_version_1_till = 624633;
+static const uint64_t testnet_hard_fork_version_1_till = 1;
 
 //------------------------------------------------------------------
 Blockchain::Blockchain(tx_memory_pool& tx_pool) :
@@ -350,6 +360,7 @@ bool Blockchain::init(BlockchainDB* db, const bool testnet, const cryptonote::te
     {
       generate_genesis_block(bl, config::GENESIS_TX, config::GENESIS_NONCE);
     }
+
     add_new_block(bl, bvc);
     CHECK_AND_ASSERT_MES(!bvc.m_verifivation_failed, false, "Failed to add genesis block to blockchain");
   }
@@ -1015,7 +1026,7 @@ bool Blockchain::validate_miner_transaction(const block& b, size_t cumulative_bl
     MERROR_VER("block size " << cumulative_block_size << " is bigger than allowed for this blockchain");
     return false;
   }
-  if(base_reward + fee < money_in_use)
+  if(base_reward + fee < money_in_use && already_generated_coins > 0)
   {
     MERROR_VER("coinbase transaction spend too much money (" << print_money(money_in_use) << "). Block reward is " << print_money(base_reward + fee) << "(" << print_money(base_reward) << "+" << print_money(fee) << ")");
     return false;
@@ -1023,7 +1034,7 @@ bool Blockchain::validate_miner_transaction(const block& b, size_t cumulative_bl
   // From hard fork 2, we allow a miner to claim less block reward than is allowed, in case a miner wants less dust
   if (m_hardfork->get_current_version() < 2)
   {
-    if(base_reward + fee != money_in_use)
+    if(base_reward + fee != money_in_use && already_generated_coins > 0)
     {
       MDEBUG("coinbase transaction doesn't use full amount of block reward:  spent: " << money_in_use << ",  block reward " << base_reward + fee << "(" << base_reward << "+" << fee << ")");
       return false;
@@ -2847,7 +2858,7 @@ uint64_t Blockchain::get_dynamic_per_kb_fee(uint64_t block_reward, size_t median
   uint64_t qlo = (lo + mask - 1) / mask * mask;
   MDEBUG("lo " << print_money(lo) << ", qlo " << print_money(qlo) << ", mask " << mask);
 
-  return qlo;
+  return qlo / 10;
 }
 
 //------------------------------------------------------------------
