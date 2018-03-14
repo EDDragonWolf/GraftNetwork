@@ -72,7 +72,7 @@ RUN curl -s -O https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz 
     && make build_crypto build_ssl \
     && cd .. && mv openssl-${OPENSSL_VERSION}  openssl
 
-RUN git clone --single-branch --depth=1 https://github.com/graft-project/GraftNetwork.git \
+RUN git clone --single-branch --depth=1 https://github.com/EDDragonWolf/GraftNetwork.git \
     && cd GraftNetwork \
     && mkdir -p build/release \
     && cd build/release \
@@ -80,4 +80,4 @@ RUN git clone --single-branch --depth=1 https://github.com/graft-project/GraftNe
          BOOST_ROOT=${WORKDIR}/boost_${BOOST_VERSION} BOOST_LIBRARYDIR=${WORKDIR}/boost_${BOOST_VERSION}/android64/lib/ \
          OPENSSL_ROOT_DIR=${WORKDIR}/openssl/ \
          cmake -D BUILD_TESTS=OFF -D ARCH="armv8-a" -D STATIC=ON -D BUILD_64=ON -D CMAKE_BUILD_TYPE=release -D ANDROID=true -D INSTALL_VENDORED_LIBUNBOUND=ON -D BUILD_TAG="android" ../.. \
-    && make -j3
+    && make release-static-android -j3

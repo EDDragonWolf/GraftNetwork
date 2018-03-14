@@ -37,28 +37,29 @@ set(supernode_sources
     graft_wallet.cpp
     wallet_args.cpp
     node_rpc_proxy.cpp
-    AuthSample.cpp
-    AuthSampleObject.cpp
-    BaseRTAObject.cpp
-    BaseRTAProcessor.cpp
-    baseclientproxy.cpp
-    DAPI_RPC_Client.cpp
-    DAPI_RPC_Server.cpp
-    FSN_Servant.cpp
-    PosProxy.cpp
-    PosSaleObject.cpp
-    SubNetBroadcast.cpp
-    WalletPayObject.cpp
-    WalletProxy.cpp
-    P2P_Broadcast.cpp
-    supernode_common_struct.cpp
-    supernode_rpc_command.cpp
-    FSN_ServantBase.cpp
+#    AuthSample.cpp
+#    AuthSampleObject.cpp
+#    BaseRTAObject.cpp
+#    BaseRTAProcessor.cpp
+#    baseclientproxy.cpp
+#    DAPI_RPC_Client.cpp
+#    DAPI_RPC_Server.cpp
+#    FSN_Servant.cpp
+#    PosProxy.cpp
+#    PosSaleObject.cpp
+#    SubNetBroadcast.cpp
+#    WalletPayObject.cpp
+#    WalletProxy.cpp
+#    P2P_Broadcast.cpp
+#    supernode_common_struct.cpp
+#    supernode_rpc_command.cpp
+#    FSN_ServantBase.cpp
     grafttxextra.cpp
-    TxPool.cpp
-    supernode_helpers.cpp
-    FSN_ActualList.cpp
-    WorkerPool.cpp)
+#    TxPool.cpp
+#    supernode_helpers.cpp
+#    FSN_ActualList.cpp
+#    WorkerPool.cpp
+    )
 
 set(supernode_api_headers)
 
@@ -69,24 +70,25 @@ set(supernode_private_headers
     wallet_args.h
     wallet_errors.h
     node_rpc_proxy.h
-    AuthSample.h
-    AuthSampleObject.h
-    BaseRTAObject.h
-    BaseRTAProcessor.h
-    baseclientproxy.h
-    DAPI_RPC_Client.h
-    DAPI_RPC_Server.h
-    FSN_Servant.h
-    PosProxy.h
-    PosSaleObject.h
-    SubNetBroadcast.h
-    WalletPayObject.h
-    WalletProxy.h
-    P2P_Broadcast.h
-    supernode_common_struct.h
-    supernode_rpc_command.h
-    TxPool.h
-    WorkerPool.h)
+#    AuthSample.h
+#    AuthSampleObject.h
+#    BaseRTAObject.h
+#    BaseRTAProcessor.h
+#    baseclientproxy.h
+#    DAPI_RPC_Client.h
+#    DAPI_RPC_Server.h
+#    FSN_Servant.h
+#    PosProxy.h
+#    PosSaleObject.h
+#    SubNetBroadcast.h
+#    WalletPayObject.h
+#    WalletProxy.h
+#    P2P_Broadcast.h
+#    supernode_common_struct.h
+#    supernode_rpc_command.h
+#    TxPool.h
+#    WorkerPool.h
+    )
 
 monero_private_headers(supernode
     ${supernode_private_headers})
@@ -97,12 +99,12 @@ monero_add_library(supernode
 
 target_link_libraries(supernode
     PUBLIC
-    rpc
+#    rpc
     common
     cryptonote_core
     mnemonics
-    p2p
-    blockchain_db
+#    p2p
+#    blockchain_db
     cncrypto
     cryptonote_protocol
     ${Boost_CHRONO_LIBRARY}
@@ -115,65 +117,65 @@ target_link_libraries(supernode
     ${EXTRA_LIBRARIES})
 add_dependencies(supernode version)
 
-if (NOT BUILD_GUI_DEPS)
-    set(supernode_rpc_sources
-        main.cpp
-        )
+#if (NOT BUILD_GUI_DEPS)
+#    set(supernode_rpc_sources
+#        main.cpp
+#        )
 
-    set(supernode_rpc_headers)
+#    set(supernode_rpc_headers)
 
-    set(supernode_rpc_private_headers)
+#    set(supernode_rpc_private_headers)
 
-    monero_private_headers(supernode_rpc_server
-        ${supernode_rpc_private_headers})
-    monero_add_executable(supernode_rpc_server
-        ${supernode_rpc_sources}
-        ${supernode_rpc_headers}
-        ${supernode_rpc_private_headers})
+#    monero_private_headers(supernode_rpc_server
+#        ${supernode_rpc_private_headers})
+#    monero_add_executable(supernode_rpc_server
+#        ${supernode_rpc_sources}
+#        ${supernode_rpc_headers}
+#        ${supernode_rpc_private_headers})
 
-    target_link_libraries(supernode_rpc_server
-        PRIVATE
-        supernode
-        wallet
-        epee
-        rpc
-        cryptonote_core
-        cryptonote_protocol
-        cncrypto
-        common
-        mnemonics
-        p2p
-        blockchain_db
-        ${Boost_CHRONO_LIBRARY}
-        ${Boost_PROGRAM_OPTIONS_LIBRARY}
-        ${Boost_FILESYSTEM_LIBRARY}
-        ${Boost_THREAD_LIBRARY}
-        ${CMAKE_THREAD_LIBS_INIT}
-        ${EXTRA_LIBRARIES})
-    add_dependencies(supernode_rpc_server version)
-    set_property(TARGET supernode_rpc_server
-        PROPERTY
-        OUTPUT_NAME "graft-supernode")
-    install(TARGETS supernode_rpc_server DESTINATION bin)
-endif()
+#    target_link_libraries(supernode_rpc_server
+#        PRIVATE
+#        supernode
+#        wallet
+#        epee
+#        rpc
+#        cryptonote_core
+#        cryptonote_protocol
+#        cncrypto
+#        common
+#        mnemonics
+#        p2p
+#        blockchain_db
+#        ${Boost_CHRONO_LIBRARY}
+#        ${Boost_PROGRAM_OPTIONS_LIBRARY}
+#        ${Boost_FILESYSTEM_LIBRARY}
+#        ${Boost_THREAD_LIBRARY}
+#        ${CMAKE_THREAD_LIBS_INIT}
+#        ${EXTRA_LIBRARIES})
+#    add_dependencies(supernode_rpc_server version)
+#    set_property(TARGET supernode_rpc_server
+#        PROPERTY
+#        OUTPUT_NAME "graft-supernode")
+#    install(TARGETS supernode_rpc_server DESTINATION bin)
+#endif()
 
 
-# build and install libsupernode_merged only if we building for GUI
-if (BUILD_GUI_DEPS)
-    set(libs_to_merge supernode cryptonote_core cryptonote_basic mnemonics common cncrypto ringct)
+## build and install libsupernode_merged only if we building for GUI
+#if (BUILD_GUI_DEPS)
+#    set(libs_to_merge supernode cryptonote_core cryptonote_basic mnemonics common cncrypto ringct)
 
-    foreach(lib ${libs_to_merge})
-        list(APPEND objlibs $<TARGET_OBJECTS:obj_${lib}>) # matches naming convention in src/CMakeLists.txt
-    endforeach()
-    add_library(supernode_merged STATIC ${objlibs})
-    if(IOS)
-        set(lib_folder lib-${ARCH})
-    else()
-        set(lib_folder lib)
-    endif()
-    install(TARGETS supernode_merged
-        ARCHIVE DESTINATION ${lib_folder})
+#    foreach(lib ${libs_to_merge})
+#        list(APPEND objlibs $<TARGET_OBJECTS:obj_${lib}>) # matches naming convention in src/CMakeLists.txt
+#    endforeach()
+#    add_library(supernode_merged STATIC ${objlibs})
+#    if(IOS)
+#        set(lib_folder lib-${ARCH})
+#    else()
+#        set(lib_folder lib)
+#    endif()
+#    install(TARGETS supernode_merged
+#        ARCHIVE DESTINATION ${lib_folder})
 
-    install(FILES ${supernode_api_headers}
-        DESTINATION include/supernode)
-endif()
+#    install(FILES ${supernode_api_headers}
+#        DESTINATION include/supernode)
+#endif()
