@@ -159,23 +159,22 @@ add_dependencies(supernode version)
 #    install(TARGETS supernode_rpc_server DESTINATION bin)
 #endif()
 
+# build and install libsupernode_merged only if we building for GUI
+if (BUILD_GUI_DEPS)
+    set(libs_to_merge supernode cryptonote_core cryptonote_basic mnemonics common cncrypto ringct)
 
-## build and install libsupernode_merged only if we building for GUI
-#if (BUILD_GUI_DEPS)
-#    set(libs_to_merge supernode cryptonote_core cryptonote_basic mnemonics common cncrypto ringct)
+    foreach(lib ${libs_to_merge})
+        list(APPEND objlibs $<TARGET_OBJECTS:obj_${lib}>) # matches naming convention in src/CMakeLists.txt
+    endforeach()
+    add_library(supernode_merged STATIC ${objlibs})
+    if(IOS)
+        set(lib_folder lib-${ARCH})
+    else()
+        set(lib_folder lib)
+    endif()
+    install(TARGETS supernode_merged
+        ARCHIVE DESTINATION ${lib_folder})
 
-#    foreach(lib ${libs_to_merge})
-#        list(APPEND objlibs $<TARGET_OBJECTS:obj_${lib}>) # matches naming convention in src/CMakeLists.txt
-#    endforeach()
-#    add_library(supernode_merged STATIC ${objlibs})
-#    if(IOS)
-#        set(lib_folder lib-${ARCH})
-#    else()
-#        set(lib_folder lib)
-#    endif()
-#    install(TARGETS supernode_merged
-#        ARCHIVE DESTINATION ${lib_folder})
-
-#    install(FILES ${supernode_api_headers}
-#        DESTINATION include/supernode)
-#endif()
+    install(FILES ${supernode_api_headers}
+        DESTINATION include/supernode)
+endif()
