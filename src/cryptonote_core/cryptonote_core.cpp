@@ -275,8 +275,8 @@ namespace cryptonote
     std::string m_port = command_line::get_arg(vm, p2p_bind_arg);
     std::string m_config_folder_mempool = m_config_folder;
 
-    if ((!testnet && m_port != std::to_string(::config::P2P_DEFAULT_PORT))
-        || (testnet && m_port != std::to_string(::config::testnet::P2P_DEFAULT_PORT))) {
+    if ((!testnet && m_port != epee::string_tools::to_string(::config::P2P_DEFAULT_PORT))
+        || (testnet && m_port != epee::string_tools::to_string(::config::testnet::P2P_DEFAULT_PORT))) {
       m_config_folder_mempool = m_config_folder_mempool + "/" + m_port;
     }
 
@@ -1373,7 +1373,7 @@ namespace cryptonote
         if (length >= m_last_update_length + 1024 * 1024 * 10)
         {
           m_last_update_length = length;
-          MCDEBUG("updates", "Downloaded " << length << "/" << (content_length ? std::to_string(content_length) : "unknown"));
+          MCDEBUG("updates", "Downloaded " << length << "/" << (content_length ? epee::string_tools::to_string(content_length) : "unknown"));
         }
         return true;
       });

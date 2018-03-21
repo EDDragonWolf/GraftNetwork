@@ -1077,8 +1077,8 @@ namespace tools
       {
         const transfer_container::const_iterator it = m_transfers.begin() + idx;
         THROW_WALLET_EXCEPTION_IF(it->m_tx.vout.size() <= it->m_internal_output_index, error::wallet_internal_error,
-          "m_internal_output_index = " + std::to_string(it->m_internal_output_index) +
-          " is greater or equal to outputs count = " + std::to_string(it->m_tx.vout.size()));
+          "m_internal_output_index = " + epee::string_tools::to_string(it->m_internal_output_index) +
+          " is greater or equal to outputs count = " + epee::string_tools::to_string(it->m_tx.vout.size()));
         req.amounts.push_back(it->amount());
       }
 
@@ -1090,7 +1090,7 @@ namespace tools
       THROW_WALLET_EXCEPTION_IF(daemon_resp.status != CORE_RPC_STATUS_OK, error::get_random_outs_error, daemon_resp.status);
       THROW_WALLET_EXCEPTION_IF(daemon_resp.outs.size() != selected_transfers.size(), error::wallet_internal_error,
         "daemon returned wrong response for getrandom_outs.bin, wrong amounts count = " +
-        std::to_string(daemon_resp.outs.size()) + ", expected " +  std::to_string(selected_transfers.size()));
+        epee::string_tools::to_string(daemon_resp.outs.size()) + ", expected " +  epee::string_tools::to_string(selected_transfers.size()));
 
       std::unordered_map<uint64_t, uint64_t> scanty_outs;
       for(COMMAND_RPC_GET_RANDOM_OUTPUTS_FOR_AMOUNTS::outs_for_amount& amount_outs: daemon_resp.outs)
@@ -1161,7 +1161,7 @@ namespace tools
     destination_split_strategy(dsts, change_dts, dust_policy.dust_threshold, splitted_dsts, dust_dsts);
     for(auto& d: dust_dsts) {
       THROW_WALLET_EXCEPTION_IF(dust_policy.dust_threshold < d.amount, error::wallet_internal_error, "invalid dust value: dust = " +
-        std::to_string(d.amount) + ", dust_threshold = " + std::to_string(dust_policy.dust_threshold));
+        epee::string_tools::to_string(d.amount) + ", dust_threshold = " + epee::string_tools::to_string(dust_policy.dust_threshold));
     }
     for(auto& d: dust_dsts) {
       if (!dust_policy.add_to_fee)

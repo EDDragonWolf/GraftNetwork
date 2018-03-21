@@ -151,7 +151,7 @@ std::string block_queue::get_overview() const
   if (blocks.empty())
     return "[]";
   block_map::const_iterator i = blocks.begin();
-  std::string s = std::string("[") + std::to_string(i->start_block_height + i->nblocks - 1) + ":";
+  std::string s = std::string("[") + epee::string_tools::to_string(i->start_block_height + i->nblocks - 1) + ":";
   while (++i != blocks.end())
     s += i->blocks.empty() ? "." : "o";
   s += "]";

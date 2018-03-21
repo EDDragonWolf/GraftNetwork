@@ -52,7 +52,7 @@ public:
   ~size_logger()
   {
     for (const auto i: types)
-      std::cout << std::to_string(i.first) << "\t" << i.second << std::endl;
+      std::cout << epee::string_tools::to_string(i.first) << "\t" << i.second << std::endl;
   }
   void add(const char *type, size_t size) { types.insert(std::make_pair(size, type)); }
 private:

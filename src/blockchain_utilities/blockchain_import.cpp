@@ -642,7 +642,7 @@ int main(int argc, char* argv[])
   if (!vm["log-level"].defaulted())
     mlog_set_log(command_line::get_arg(vm, arg_log_level).c_str());
   else
-    mlog_set_log(std::string(std::to_string(log_level) + ",bcutil:INFO").c_str());
+    mlog_set_log(std::string(epee::string_tools::to_string(log_level) + ",bcutil:INFO").c_str());
 
   MINFO("Starting...");
 

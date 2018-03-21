@@ -181,7 +181,7 @@ bool supernode::WalletPayObject::PutTXToPool() {
     }
     if (ptx->txCount() > 1) {
         LOG_ERROR("TODO: we should handle this somehow");
-        throw std::runtime_error(std::string("tx was splitted by ") + std::to_string(ptx->txCount()) + " transactions, we dont hadle it now");
+        throw std::runtime_error(std::string("tx was splitted by ") + epee::string_tools::to_string(ptx->txCount()) + " transactions, we dont hadle it now");
     }
 
     m_TransactionPoolID = ptx->txid()[0];

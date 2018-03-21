@@ -83,7 +83,7 @@ namespace net_utils
 		ipv4_network_address(uint32_t ip, uint16_t port): network_address_base(), m_ip(ip), m_port(port) { init_ids(); }
 		uint32_t ip() const { return m_ip; }
 		uint16_t port() const { return m_port; }
-		virtual std::string str() const { return epee::string_tools::get_ip_string_from_int32(m_ip) + ":" + std::to_string(m_port); }
+		virtual std::string str() const { return epee::string_tools::get_ip_string_from_int32(m_ip) + ":" + epee::string_tools::to_string(m_port); }
 		virtual std::string host_str() const { return epee::string_tools::get_ip_string_from_int32(m_ip); }
 		virtual bool is_loopback() const { return epee::net_utils::is_ip_loopback(m_ip); }
 		virtual bool is_local() const { return epee::net_utils::is_ip_local(m_ip); }

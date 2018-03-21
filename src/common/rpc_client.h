@@ -53,7 +53,7 @@ namespace tools
       : m_http_client{}
     {
       m_http_client.set_server(
-        epee::string_tools::get_ip_string_from_int32(ip), std::to_string(port), std::move(user)
+        epee::string_tools::get_ip_string_from_int32(ip), epee::string_tools::to_string(port), std::move(user)
       );
     }
 

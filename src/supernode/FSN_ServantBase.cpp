@@ -52,7 +52,7 @@ int FSN_ServantBase::GetNodePort() const
 
 string FSN_ServantBase::GetNodeAddress() const
 {
-    return m_nodeIp + ":" + std::to_string(m_nodePort);
+    return m_nodeIp + ":" + epee::string_tools::to_string(m_nodePort);
 }
 
 string FSN_ServantBase::GetNodeLogin() const

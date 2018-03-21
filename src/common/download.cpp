@@ -62,7 +62,7 @@ namespace tools
   {
     static std::atomic<unsigned int> thread_id(0);
 
-    MLOG_SET_THREAD_NAME("DL" + std::to_string(thread_id++));
+    MLOG_SET_THREAD_NAME("DL" + epee::string_tools::to_string(thread_id++));
 
     struct stopped_setter
     {
@@ -149,7 +149,7 @@ namespace tools
 
       uint16_t port = u_c.port ? u_c.port : 80;
       MDEBUG("Connecting to " << u_c.host << ":" << port);
-      client.set_server(u_c.host, std::to_string(port), boost::none);
+      client.set_server(u_c.host, epee::string_tools::to_string(port), boost::none);
       if (!client.connect(std::chrono::seconds(30)))
       {
         boost::lock_guard<boost::mutex> lock(control->mutex);

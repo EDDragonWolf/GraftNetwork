@@ -3967,15 +3967,15 @@ static std::string get_human_readable_timespan(std::chrono::seconds seconds)
 {
   uint64_t ts = seconds.count();
   if (ts < 60)
-    return std::to_string(ts) + tr(" seconds");
+    return epee::string_tools::to_string(ts) + tr(" seconds");
   if (ts < 3600)
-    return std::to_string((uint64_t)(ts / 60)) + tr(" minutes");
+    return epee::string_tools::to_string((uint64_t)(ts / 60)) + tr(" minutes");
   if (ts < 3600 * 24)
-    return std::to_string((uint64_t)(ts / 3600)) + tr(" hours");
+    return epee::string_tools::to_string((uint64_t)(ts / 3600)) + tr(" hours");
   if (ts < 3600 * 24 * 30.5)
-    return std::to_string((uint64_t)(ts / (3600 * 24))) + tr(" days");
+    return epee::string_tools::to_string((uint64_t)(ts / (3600 * 24))) + tr(" days");
   if (ts < 3600 * 24 * 365.25)
-    return std::to_string((uint64_t)(ts / (3600 * 24 * 365.25))) + tr(" months");
+    return epee::string_tools::to_string((uint64_t)(ts / (3600 * 24 * 365.25))) + tr(" months");
   return tr("a long time");
 }
 //----------------------------------------------------------------------------------------------------
@@ -4826,7 +4826,7 @@ bool simple_wallet::show_transfer(const std::vector<std::string> &args)
         if (bh >= last_block_height)
           success_msg_writer() << "Locked: " << (bh - last_block_height) << " blocks to unlock";
         else
-          success_msg_writer() << std::to_string(last_block_height - bh) << " confirmations";
+          success_msg_writer() << epee::string_tools::to_string(last_block_height - bh) << " confirmations";
       }
       else
       {

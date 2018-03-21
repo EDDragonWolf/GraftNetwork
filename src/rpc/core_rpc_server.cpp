@@ -269,7 +269,7 @@ namespace cryptonote
       }
       catch (...)
       {
-        res.status = "Error retrieving block at height " + std::to_string(height);
+        res.status = "Error retrieving block at height " + epee::string_tools::to_string(height);
         return true;
       }
       std::list<transaction> txs;
@@ -874,7 +874,7 @@ namespace cryptonote
     if(m_core.get_current_blockchain_height() <= h)
     {
       error_resp.code = CORE_RPC_ERROR_CODE_TOO_BIG_HEIGHT;
-      error_resp.message = std::string("Too big height: ") + std::to_string(h) + ", current blockchain height = " +  std::to_string(m_core.get_current_blockchain_height());
+      error_resp.message = std::string("Too big height: ") + epee::string_tools::to_string(h) + ", current blockchain height = " +  epee::string_tools::to_string(m_core.get_current_blockchain_height());
     }
     res = string_tools::pod_to_hex(m_core.get_block_id_by_height(h));
     return true;
@@ -1178,7 +1178,7 @@ namespace cryptonote
     if(m_core.get_current_blockchain_height() <= req.height)
     {
       error_resp.code = CORE_RPC_ERROR_CODE_TOO_BIG_HEIGHT;
-      error_resp.message = std::string("Too big height: ") + std::to_string(req.height) + ", current blockchain height = " +  std::to_string(m_core.get_current_blockchain_height());
+      error_resp.message = std::string("Too big height: ") + epee::string_tools::to_string(req.height) + ", current blockchain height = " +  epee::string_tools::to_string(m_core.get_current_blockchain_height());
       return false;
     }
     crypto::hash block_hash = m_core.get_block_id_by_height(req.height);
@@ -1187,7 +1187,7 @@ namespace cryptonote
     if (!have_block)
     {
       error_resp.code = CORE_RPC_ERROR_CODE_INTERNAL_ERROR;
-      error_resp.message = "Internal error: can't get block by height. Height = " + std::to_string(req.height) + '.';
+      error_resp.message = "Internal error: can't get block by height. Height = " + epee::string_tools::to_string(req.height) + '.';
       return false;
     }
     bool response_filled = fill_block_header_response(blk, false, req.height, block_hash, res.block_header);
@@ -1224,7 +1224,7 @@ namespace cryptonote
       if(m_core.get_current_blockchain_height() <= req.height)
       {
         error_resp.code = CORE_RPC_ERROR_CODE_TOO_BIG_HEIGHT;
-        error_resp.message = std::string("Too big height: ") + std::to_string(req.height) + ", current blockchain height = " +  std::to_string(m_core.get_current_blockchain_height());
+        error_resp.message = std::string("Too big height: ") + epee::string_tools::to_string(req.height) + ", current blockchain height = " +  epee::string_tools::to_string(m_core.get_current_blockchain_height());
         return false;
       }
       block_hash = m_core.get_block_id_by_height(req.height);
@@ -1755,13 +1755,13 @@ namespace cryptonote
   const command_line::arg_descriptor<std::string> core_rpc_server::arg_rpc_bind_port = {
       "rpc-bind-port"
     , "Port for RPC server"
-    , std::to_string(config::RPC_DEFAULT_PORT)
+    , epee::string_tools::to_string(config::RPC_DEFAULT_PORT)
     };
 
   const command_line::arg_descriptor<std::string> core_rpc_server::arg_testnet_rpc_bind_port = {
       "testnet-rpc-bind-port"
     , "Port for testnet RPC server"
-    , std::to_string(config::testnet::RPC_DEFAULT_PORT)
+    , epee::string_tools::to_string(config::testnet::RPC_DEFAULT_PORT)
     };
 
   const command_line::arg_descriptor<bool> core_rpc_server::arg_restricted_rpc = {

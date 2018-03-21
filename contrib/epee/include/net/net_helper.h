@@ -115,7 +115,7 @@ namespace net_utils
     inline
       bool connect(const std::string& addr, int port, std::chrono::milliseconds timeout, const std::string& bind_ip = "0.0.0.0")
     {
-      return connect(addr, std::to_string(port), timeout, bind_ip);
+      return connect(addr, epee::string_tools::to_string(port), timeout, bind_ip);
     }
 
     inline

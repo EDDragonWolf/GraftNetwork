@@ -1462,7 +1462,7 @@ namespace tools
         if (idx >= ab.size())
         {
           er.code = WALLET_RPC_ERROR_CODE_WRONG_INDEX;
-          er.message = "Index out of range: " + std::to_string(idx);
+          er.message = "Index out of range: " + epee::string_tools::to_string(idx);
           return false;
         }
         const auto &entry = ab[idx];
@@ -1563,7 +1563,7 @@ namespace tools
     if (req.index >= ab.size())
     {
       er.code = WALLET_RPC_ERROR_CODE_WRONG_INDEX;
-      er.message = "Index out of range: " + std::to_string(req.index);
+      er.message = "Index out of range: " + epee::string_tools::to_string(req.index);
       return false;
     }
     if (!m_wallet->delete_address_book_row(req.index))

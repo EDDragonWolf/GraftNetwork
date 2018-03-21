@@ -78,12 +78,12 @@ namespace nodetool
     const command_line::arg_descriptor<std::string> arg_p2p_bind_port = {
         "p2p-bind-port"
       , "Port for p2p network protocol"
-      , std::to_string(config::P2P_DEFAULT_PORT)
+      , epee::string_tools::to_string(config::P2P_DEFAULT_PORT)
       };
     const command_line::arg_descriptor<std::string> arg_testnet_p2p_bind_port = {
         "testnet-p2p-bind-port"
       , "Port for testnet p2p network protocol"
-      , std::to_string(config::testnet::P2P_DEFAULT_PORT)
+      , epee::string_tools::to_string(config::testnet::P2P_DEFAULT_PORT)
       };
     const command_line::arg_descriptor<uint32_t>    arg_p2p_external_port  = {"p2p-external-port", "External port for p2p network protocol (if port forwarding used with NAT)", 0};
     const command_line::arg_descriptor<bool>        arg_p2p_allow_local_ip = {"allow-local-ip", "Allow local ip add to peer list, mostly in debug purposes"};
@@ -532,8 +532,8 @@ namespace nodetool
     auto config_arg = m_testnet ? command_line::arg_testnet_data_dir : command_line::arg_data_dir;
     m_config_folder = command_line::get_arg(vm, config_arg);
 
-    if ((!m_testnet && m_port != std::to_string(::config::P2P_DEFAULT_PORT))
-        || (m_testnet && m_port != std::to_string(::config::testnet::P2P_DEFAULT_PORT))) {
+    if ((!m_testnet && m_port != epee::string_tools::to_string(::config::P2P_DEFAULT_PORT))
+        || (m_testnet && m_port != epee::string_tools::to_string(::config::testnet::P2P_DEFAULT_PORT))) {
       m_config_folder = m_config_folder + "/" + m_port;
     }
 

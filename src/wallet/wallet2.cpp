@@ -176,7 +176,7 @@ std::unique_ptr<tools::wallet2> make_basic(const boost::program_options::variabl
   }
 
   if (daemon_address.empty())
-    daemon_address = std::string("http://") + daemon_host + ":" + std::to_string(daemon_port);
+    daemon_address = std::string("http://") + daemon_host + ":" + epee::string_tools::to_string(daemon_port);
 
   std::unique_ptr<tools::wallet2> wallet(new tools::wallet2(testnet, restricted));
   wallet->init(std::move(daemon_address), std::move(login));
@@ -436,7 +436,7 @@ std::string strjoin(const std::vector<size_t> &V, const char *sep)
   {
     if (!first)
       ss << sep;
-    ss << std::to_string(v);
+    ss << epee::string_tools::to_string(v);
     first = false;
   }
   return ss.str();
@@ -865,14 +865,14 @@ void wallet2::process_new_transaction(const crypto::hash &txid, const cryptonote
       if (!pool)
       {
         THROW_WALLET_EXCEPTION_IF(tx.vout.size() != o_indices.size(), error::wallet_internal_error,
-            "transactions outputs size=" + std::to_string(tx.vout.size()) +
-            " not match with daemon response size=" + std::to_string(o_indices.size()));
+            "transactions outputs size=" + epee::string_tools::to_string(tx.vout.size()) +
+            " not match with daemon response size=" + epee::string_tools::to_string(o_indices.size()));
       }
 
       for(size_t o: outs)
       {
 	THROW_WALLET_EXCEPTION_IF(tx.vout.size() <= o, error::wallet_internal_error, "wrong out in transaction: internal index=" +
-				  std::to_string(o) + ", total_outs=" + std::to_string(tx.vout.size()));
+				  epee::string_tools::to_string(o) + ", total_outs=" + epee::string_tools::to_string(tx.vout.size()));
 
         auto kit = m_pub_keys.find(in_ephemeral[o].pub);
 	THROW_WALLET_EXCEPTION_IF(kit != m_pub_keys.end() && kit->second >= m_transfers.size(),
@@ -1120,8 +1120,8 @@ void wallet2::process_new_blockchain_entry(const cryptonote::block& b, const cry
 {
   size_t txidx = 0;
   THROW_WALLET_EXCEPTION_IF(bche.txs.size() + 1 != o_indices.indices.size(), error::wallet_internal_error,
-      "block transactions=" + std::to_string(bche.txs.size()) +
-      " not match with daemon response size=" + std::to_string(o_indices.indices.size()));
+      "block transactions=" + epee::string_tools::to_string(bche.txs.size()) +
+      " not match with daemon response size=" + epee::string_tools::to_string(o_indices.indices.size()));
 
   //handle transactions from new block
     
@@ -1316,7 +1316,7 @@ void wallet2::process_blocks(uint64_t start_height, const std::list<cryptonote::
           //split detected here !!!
           THROW_WALLET_EXCEPTION_IF(current_index == start_height, error::wallet_internal_error,
             "wrong daemon response: split starts from the first block in response " + string_tools::pod_to_hex(bl_id) +
-            " (height " + std::to_string(start_height) + "), local block id at this height: " +
+            " (height " + epee::string_tools::to_string(start_height) + "), local block id at this height: " +
             string_tools::pod_to_hex(m_blockchain[current_index]));
 
           detach_blockchain(current_index);
@@ -1350,7 +1350,7 @@ void wallet2::process_blocks(uint64_t start_height, const std::list<cryptonote::
       //split detected here !!!
       THROW_WALLET_EXCEPTION_IF(current_index == start_height, error::wallet_internal_error,
         "wrong daemon response: split starts from the first block in response " + string_tools::pod_to_hex(bl_id) +
-        " (height " + std::to_string(start_height) + "), local block id at this height: " +
+        " (height " + epee::string_tools::to_string(start_height) + "), local block id at this height: " +
         string_tools::pod_to_hex(m_blockchain[current_index]));
 
       detach_blockchain(current_index);
@@ -2826,7 +2826,7 @@ void wallet2::rescan_spent()
     THROW_WALLET_EXCEPTION_IF(daemon_resp.status != CORE_RPC_STATUS_OK, error::is_key_image_spent_error, daemon_resp.status);
     THROW_WALLET_EXCEPTION_IF(daemon_resp.spent_status.size() != n_outputs, error::wallet_internal_error,
       "daemon returned wrong response for is_key_image_spent, wrong amounts count = " +
-      std::to_string(daemon_resp.spent_status.size()) + ", expected " +  std::to_string(n_outputs));
+      epee::string_tools::to_string(daemon_resp.spent_status.size()) + ", expected " +  epee::string_tools::to_string(n_outputs));
     std::copy(daemon_resp.spent_status.begin(), daemon_resp.spent_status.end(), std::back_inserter(spent_status));
   }
 
@@ -3823,7 +3823,7 @@ void wallet2::get_outs(std::vector<std::vector<tools::wallet2::get_outs_entry>> 
     THROW_WALLET_EXCEPTION_IF(daemon_resp.status != CORE_RPC_STATUS_OK, error::get_random_outs_error, daemon_resp.status);
     THROW_WALLET_EXCEPTION_IF(daemon_resp.outs.size() != req.outputs.size(), error::wallet_internal_error,
       "daemon returned wrong response for get_outs.bin, wrong amounts count = " +
-      std::to_string(daemon_resp.outs.size()) + ", expected " +  std::to_string(req.outputs.size()));
+      epee::string_tools::to_string(daemon_resp.outs.size()) + ", expected " +  epee::string_tools::to_string(req.outputs.size()));
 
     std::unordered_map<uint64_t, uint64_t> scanty_outs;
     size_t base = 0;
@@ -3997,7 +3997,7 @@ void wallet2::transfer_selected(const std::vector<cryptonote::tx_destination_ent
   destination_split_strategy(dsts, change_dts, dust_policy.dust_threshold, splitted_dsts, dust_dsts);
   for(auto& d: dust_dsts) {
     THROW_WALLET_EXCEPTION_IF(dust_policy.dust_threshold < d.amount, error::wallet_internal_error, "invalid dust value: dust = " +
-      std::to_string(d.amount) + ", dust_threshold = " + std::to_string(dust_policy.dust_threshold));
+      epee::string_tools::to_string(d.amount) + ", dust_threshold = " + epee::string_tools::to_string(dust_policy.dust_threshold));
   }
   for(auto& d: dust_dsts) {
     if (!dust_policy.add_to_fee)
@@ -4400,7 +4400,7 @@ std::vector<wallet2::pending_tx> wallet2::create_transactions_2(std::vector<cryp
       else
       {
         THROW_WALLET_EXCEPTION_IF(original_output_index > dsts.size(), error::wallet_internal_error,
-            std::string("original_output_index too large: ") + std::to_string(original_output_index) + " > " + std::to_string(dsts.size()));
+            std::string("original_output_index too large: ") + epee::string_tools::to_string(original_output_index) + " > " + epee::string_tools::to_string(dsts.size()));
         if (original_output_index == dsts.size())
           dsts.push_back(tx_destination_entry(0,addr));
         THROW_WALLET_EXCEPTION_IF(memcmp(&dsts[original_output_index].addr, &addr, sizeof(addr)), error::wallet_internal_error, "Mismatched destination address");
@@ -5435,7 +5435,7 @@ uint64_t wallet2::import_key_images(const std::vector<std::pair<crypto::key_imag
   THROW_WALLET_EXCEPTION_IF(daemon_resp.status != CORE_RPC_STATUS_OK, error::is_key_image_spent_error, daemon_resp.status);
   THROW_WALLET_EXCEPTION_IF(daemon_resp.spent_status.size() != signed_key_images.size(), error::wallet_internal_error,
     "daemon returned wrong response for is_key_image_spent, wrong amounts count = " +
-    std::to_string(daemon_resp.spent_status.size()) + ", expected " +  std::to_string(signed_key_images.size()));
+    epee::string_tools::to_string(daemon_resp.spent_status.size()) + ", expected " +  epee::string_tools::to_string(signed_key_images.size()));
 
   spent = 0;
   unspent = 0;
@@ -5759,9 +5759,9 @@ uint64_t wallet2::get_blockchain_height_by_date(uint16_t year, uint8_t month, ui
       throw std::runtime_error(oss.str());
     }
     cryptonote::block blk_min, blk_mid, blk_max;
-    if (!parse_and_validate_block_from_blob(res.blocks[0].block, blk_min)) throw std::runtime_error("failed to parse blob at height " + std::to_string(height_min));
-    if (!parse_and_validate_block_from_blob(res.blocks[1].block, blk_mid)) throw std::runtime_error("failed to parse blob at height " + std::to_string(height_mid));
-    if (!parse_and_validate_block_from_blob(res.blocks[2].block, blk_max)) throw std::runtime_error("failed to parse blob at height " + std::to_string(height_max));
+    if (!parse_and_validate_block_from_blob(res.blocks[0].block, blk_min)) throw std::runtime_error("failed to parse blob at height " + epee::string_tools::to_string(height_min));
+    if (!parse_and_validate_block_from_blob(res.blocks[1].block, blk_mid)) throw std::runtime_error("failed to parse blob at height " + epee::string_tools::to_string(height_mid));
+    if (!parse_and_validate_block_from_blob(res.blocks[2].block, blk_max)) throw std::runtime_error("failed to parse blob at height " + epee::string_tools::to_string(height_max));
     uint64_t timestamp_min = blk_min.timestamp;
     uint64_t timestamp_mid = blk_mid.timestamp;
     uint64_t timestamp_max = blk_max.timestamp;

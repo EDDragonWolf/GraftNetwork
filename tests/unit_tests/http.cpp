@@ -541,7 +541,7 @@ TEST(HTTP_Auth, DogFood)
 
   for (unsigned i = 0; i < 1000; ++i)
   {
-    request.m_http_method_str += std::to_string(i);
+    request.m_http_method_str += epee::string_tools::to_string(i);
     request.m_header_info.m_etc_fields.clear();
     EXPECT_TRUE(add_auth_field(request, client));
     EXPECT_FALSE(bool(server.get_response(request)));

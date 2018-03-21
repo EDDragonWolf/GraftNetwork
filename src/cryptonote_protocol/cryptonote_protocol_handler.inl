@@ -152,9 +152,9 @@ namespace cryptonote
         cntxt.m_remote_address.str()
         << std::setw(20) << std::hex << peer_id
         << std::setw(20) << std::hex << support_flags
-        << std::setw(30) << std::to_string(cntxt.m_recv_cnt)+ "(" + std::to_string(time(NULL) - cntxt.m_last_recv) + ")" + "/" + std::to_string(cntxt.m_send_cnt) + "(" + std::to_string(time(NULL) - cntxt.m_last_send) + ")"
+        << std::setw(30) << epee::string_tools::to_string(cntxt.m_recv_cnt)+ "(" + epee::string_tools::to_string(time(NULL) - cntxt.m_last_recv) + ")" + "/" + epee::string_tools::to_string(cntxt.m_send_cnt) + "(" + epee::string_tools::to_string(time(NULL) - cntxt.m_last_send) + ")"
         << std::setw(25) << get_protocol_state_string(cntxt.m_state)
-        << std::setw(20) << std::to_string(time(NULL) - cntxt.m_started)
+        << std::setw(20) << epee::string_tools::to_string(time(NULL) - cntxt.m_started)
         << std::setw(12) << std::fixed << (connection_time == 0 ? 0.0 : cntxt.m_recv_cnt / connection_time / 1024)
         << std::setw(14) << std::fixed << cntxt.m_current_speed_down / 1024
         << std::setw(10) << std::fixed << (connection_time == 0 ? 0.0 : cntxt.m_send_cnt / connection_time / 1024)
@@ -205,7 +205,7 @@ namespace cryptonote
       if (cntxt.m_remote_address.get_type_id() == epee::net_utils::ipv4_network_address::ID)
       {
         cnx.ip = cnx.host;
-        cnx.port = std::to_string(cntxt.m_remote_address.as<epee::net_utils::ipv4_network_address>().port());
+        cnx.port = epee::string_tools::to_string(cntxt.m_remote_address.as<epee::net_utils::ipv4_network_address>().port());
       }
 
       std::stringstream peer_id_str;
@@ -1145,9 +1145,9 @@ skip:
             const boost::posix_time::time_duration dt = boost::posix_time::microsec_clock::universal_time() - start;
             std::string timing_message = "";
             if (ELPP->vRegistry()->allowed(el::Level::Info, "sync-info"))
-              timing_message = std::string(" (") + std::to_string(dt.total_microseconds()/1e6) + " sec, "
-                + std::to_string((m_core.get_current_blockchain_height() - previous_height) * 1e6 / dt.total_microseconds())
-                + " blocks/sec), " + std::to_string(m_block_queue.get_data_size() / 1048576.f) + " MB queued";
+              timing_message = std::string(" (") + epee::string_tools::to_string(dt.total_microseconds()/1e6) + " sec, "
+                + epee::string_tools::to_string((m_core.get_current_blockchain_height() - previous_height) * 1e6 / dt.total_microseconds())
+                + " blocks/sec), " + epee::string_tools::to_string(m_block_queue.get_data_size() / 1048576.f) + " MB queued";
             if (ELPP->vRegistry()->allowed(el::Level::Debug, "sync-info"))
               timing_message += std::string(": ") + m_block_queue.get_overview();
             MGINFO_YELLOW(context << " Synced " << m_core.get_current_blockchain_height() << "/" << m_core.get_target_blockchain_height()

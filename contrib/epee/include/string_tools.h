@@ -60,6 +60,13 @@ namespace epee
 {
 namespace string_tools
 {
+    template <typename T>
+    std::string to_string(T value)
+    {
+        std::ostringstream os;
+        os << value;
+        return os.str();
+    }
 	//----------------------------------------------------------------------------
 	inline std::string get_str_from_guid_a(const boost::uuids::uuid& rid)
 	{

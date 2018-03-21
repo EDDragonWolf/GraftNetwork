@@ -488,7 +488,7 @@ bool t_rpc_command_executor::print_connections() {
      << std::setw(30) << std::left << address
      << std::setw(20) << epee::string_tools::pad_string(info.peer_id, 16, '0', true)
      << std::setw(20) << info.support_flags
-     << std::setw(30) << std::to_string(info.recv_count) + "("  + std::to_string(info.recv_idle_time) + ")/" + std::to_string(info.send_count) + "(" + std::to_string(info.send_idle_time) + ")"
+     << std::setw(30) << epee::string_tools::to_string(info.recv_count) + "("  + epee::string_tools::to_string(info.recv_idle_time) + ")/" + epee::string_tools::to_string(info.send_count) + "(" + epee::string_tools::to_string(info.send_idle_time) + ")"
      << std::setw(25) << info.state
      << std::setw(20) << info.live_time
      << std::setw(12) << info.avg_download
@@ -571,7 +571,7 @@ bool t_rpc_command_executor::set_log_level(int8_t level) {
     }
   }
 
-  tools::success_msg_writer() << "Log level is now " << std::to_string(level);
+  tools::success_msg_writer() << "Log level is now " << epee::string_tools::to_string(level);
 
   return true;
 }
@@ -1753,7 +1753,7 @@ bool t_rpc_command_executor::sync_info()
       current_download += p.info.current_download;
     tools::success_msg_writer() << "Downloading at " << current_download << " kB/s";
 
-    tools::success_msg_writer() << std::to_string(res.peers.size()) << " peers";
+    tools::success_msg_writer() << epee::string_tools::to_string(res.peers.size()) << " peers";
     for (const auto &p: res.peers)
     {
       std::string address = epee::string_tools::pad_string(p.info.address, 24);
@@ -1767,7 +1767,7 @@ bool t_rpc_command_executor::sync_info()
     uint64_t total_size = 0;
     for (const auto &s: res.spans)
       total_size += s.size;
-    tools::success_msg_writer() << std::to_string(res.spans.size()) << " spans, " << total_size/1e6 << " MB";
+    tools::success_msg_writer() << epee::string_tools::to_string(res.spans.size()) << " spans, " << total_size/1e6 << " MB";
     for (const auto &s: res.spans)
     {
       std::string address = epee::string_tools::pad_string(s.remote_address, 24);

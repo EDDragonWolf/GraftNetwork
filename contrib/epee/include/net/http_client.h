@@ -301,7 +301,7 @@ using namespace std;
 				http::url_content parsed{};
 				const bool r = parse_url(address, parsed);
 				CHECK_AND_ASSERT_MES(r, false, "failed to parse url: " << address);
-				set_server(std::move(parsed.host), std::to_string(parsed.port), std::move(user));
+                set_server(std::move(parsed.host), epee::string_tools::to_string(parsed.port), std::move(user));
 				return true;
 			}
 
@@ -370,7 +370,7 @@ using namespace std;
 				req_buff.reserve(2048);
 				req_buff.append(method.data(), method.size()).append(" ").append(uri.data(), uri.size()).append(" HTTP/1.1\r\n");
 				add_field(req_buff, "Host", m_host_buff);
-				add_field(req_buff, "Content-Length", std::to_string(body.size()));
+                add_field(req_buff, "Content-Length", epee::string_tools::to_string(body.size()));
 
 				//handle "additional_params"
 				for(const auto& field : additional_params)
