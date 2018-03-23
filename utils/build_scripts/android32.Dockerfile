@@ -32,6 +32,7 @@ RUN ${ANDROID_NDK_ROOT}/build/tools/make_standalone_toolchain.py \
          --arch arm \
          --api 21 \
          --install-dir $TOOLCHAIN_DIR \
+         --unified-headers \
          --stl=gnustl
 ENV PATH $TOOLCHAIN_DIR/arm-linux-androideabi/bin:$TOOLCHAIN_DIR/bin:$PATH
 
